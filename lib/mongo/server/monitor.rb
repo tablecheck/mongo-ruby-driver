@@ -299,7 +299,7 @@ module Mongo
       end
 
       def check
-        if @connection && @connection.pid != Process.pid
+        if Mongo.reconnect_on_pid_change && @connection && @connection.pid != Process.pid
           log_warn("Detected PID change - Mongo client should have been reconnected (old pid #{@connection.pid}, new pid #{Process.pid}")
           @connection.disconnect!
           @connection = nil

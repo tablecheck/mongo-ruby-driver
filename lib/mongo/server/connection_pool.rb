@@ -1144,7 +1144,7 @@ module Mongo
       end
 
       def valid_available_connection?(connection, pid, connection_global_id)
-        if connection.pid != pid
+        if Mongo.reconnect_on_pid_change && connection.pid != pid
           log_warn("Detected PID change - Mongo client should have been reconnected (old pid #{connection.pid}, new pid #{pid}")
           connection.disconnect!(reason: :stale)
           @populate_semaphore.signal
